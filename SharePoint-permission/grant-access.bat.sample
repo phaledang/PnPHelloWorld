@@ -1,0 +1,21 @@
+@echo off
+REM ========================================
+REM Grant SharePoint Library Access Script
+REM ========================================
+
+REM Configuration
+SET TenantId=a3e8f00c-xxxx-xxxx-xxxx-96ca13af6290
+SET SiteUrl=https://xxxx.sharepoint.com/sites/demo
+SET AppId=4ca0dc20-xxxx-xxxx-xxxx-a53fae722bf3
+SET Libraries=Documents,test-approval
+SET Permission=write
+
+REM Execute PowerShell script
+powershell -ExecutionPolicy Bypass -File grant-library-access.ps1 ^
+    -TenantId %TenantId% ^
+    -SiteUrl "%SiteUrl%" ^
+    -AppId %AppId% ^
+    -Libraries "%Libraries%" ^
+    -Permission %Permission%
+
+pause

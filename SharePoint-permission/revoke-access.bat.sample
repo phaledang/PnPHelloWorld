@@ -1,0 +1,17 @@
+@echo off
+REM ========================================
+REM Revoke SharePoint Site Access Script
+REM ========================================
+
+REM Configuration
+SET TenantId=a3e8f00c-xxxx-xxxx-xxxx-96ca13af6290
+SET SiteUrl=https://xxxx.sharepoint.com/sites/demo
+SET AppId=4ca0dc20-xxxx-xxxx-xxxx-a53fae722bf3
+
+REM Execute PowerShell script
+powershell -ExecutionPolicy Bypass -File revoke-site-access.ps1 ^
+    -TenantId %TenantId% ^
+    -SiteUrl "%SiteUrl%" ^
+    -AppId %AppId%
+
+pause

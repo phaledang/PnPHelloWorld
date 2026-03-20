@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PnP.Core.Auth.Services.Builder.Configuration;
 using PnP.Core.Services;
@@ -8,14 +9,24 @@ internal class Program
 {
     private static async Task Main(string[] args)
     {
-        // use environment variables or other secure configuration management in production scenarios
-        var tenantId = Environment.GetEnvironmentVariable("TENANT_ID");
-        var clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
-        var siteUrl = Environment.GetEnvironmentVariable("SITE_URL");
+        var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
+
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+
+        var tenantId = configuration["TenantId"];
+        var clientId = configuration["ClientId"];
+        var siteUrl = configuration["SiteUrl"];
+        var certPath = configuration["CertificatePath"];
+        var certPassword = configuration["CertificatePassword"];
 
         var cert = X509CertificateLoader.LoadPkcs12FromFile(
-            @"C:\certs\pnpapp.pfx",
-            "YourStrongPassword123!",
+            certPath!,
+            certPassword,
             X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
 
         var services = new ServiceCollection();
