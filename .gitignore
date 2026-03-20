@@ -1,0 +1,8 @@
+# Build output
+bin/
+obj/
+
+# Environment-specific settings with secrets
+appsettings.Development.json
+appsettings.UAT.json
+appsettings.Production.json
